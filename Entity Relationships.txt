@@ -1,0 +1,31 @@
+Entity: Player
+Properties: player_id, player_name, player_age, player_contact, role_id
+Navigation: Role, PlayerMatch[], Fee[]
+
+Entity: Team
+Properties: team_id, team_name
+Navigation: TeamSeason[], HomeMatches[], AwayMatches[]
+
+Entity: Season
+Properties: season_id, season_title, season_start_date, season_end_date
+Navigation: TeamSeason[], Matches[]
+
+Entity: Match
+Properties: match_id, match_name, match_date, season_id, home_team_id, away_team_id
+Navigation: PlayerMatch[], HomeTeam, AwayTeam, Season
+
+Entity: PlayerMatch
+Properties: player_id, match_id, runs_scored, wickets_taken, catches
+Navigation: Player, Match
+
+Entity: Role
+Properties: role_id, role_name
+Navigation: Player[]
+
+Entity: TeamSeason
+Properties: team_id, season_id
+Navigation: Team, Season
+
+Entity: Fee
+Properties: fee_id, player_id, fee_date, amount, fee_status
+Navigation: Player

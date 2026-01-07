@@ -1,0 +1,17 @@
+<Solution>
+  <Folder Name="/docker/" />
+  <Folder Name="/docs/">
+    <File Path="Entity Relationships.txt" />
+  </Folder>
+  <Folder Name="/scripts/" />
+  <Project Path="CricketClubManagement.Api/CricketClubManagement.Api.csproj" />
+  <Project Path="CricketClubManagement.Application/CricketClubManagement.Application.csproj" />
+  <Project Path="CricketClubManagement.Domain/CricketClubManagement.Domain.csproj" />
+  <Project Path="CricketClubManagement.Infrastructure/CricketClubManagement.Infrastructure.csproj" />
+  <Project Path="CricketClubManagement.IntegrationTests/CricketClubManagement.IntegrationTests.csproj" Id="37441ad2-d26c-4b73-ac7d-fed66b09b9b8" />
+  <Project Path="CricketClubManagement.UnitTests/CricketClubManagement.UnitTests.csproj" Id="97228b2d-48c9-40cc-a880-5e931318a575" />
+  <Project Path="CricketClubManagement.Web/CricketClubManagement.Web.esproj">
+    <Build />
+    <Deploy />
+  </Project>
+</Solution>
