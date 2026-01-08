@@ -15,11 +15,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\CricketClubManagement.Api\CricketClubManagement.Api.csproj" />
-    <ProjectReference Include="..\CricketClubManagement.Infrastructure\CricketClubManagement.Infrastructure.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
     <Using Include="Xunit" />
   </ItemGroup>
 

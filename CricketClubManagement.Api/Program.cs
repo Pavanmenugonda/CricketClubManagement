@@ -1,11 +1,15 @@
-using CricketClubManagement.Infrastructure;
+using CricketClubManagement.Application.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using CricketClubManagement.Infrastructure.Services;
+using CricketClubManagement.Infrastructure;
+
 //using Microsoft.OpenApi.Models; // Add this using directive
 using Swashbuckle.AspNetCore.SwaggerGen; // Add this using directive
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+
 builder.Services.AddDbContext<CricketClubManagementDbContext>(options =>
     options.UseSqlServer(
         builder.Configuration.GetConnectionString("CricketClubManagementDatabase"),
@@ -17,6 +21,9 @@ builder.Services.AddControllers();
 builder.Services.AddOpenApi();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+builder.Services.AddScoped<IPlayerService, PlayerService>();
+builder.Services.AddScoped<ITeamService, TeamService>();
 
 var app = builder.Build();
 

@@ -20,8 +20,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\CricketClubManagement.Application\CricketClubManagement.Application.csproj" />
-    <ProjectReference Include="..\CricketClubManagement.Domain\CricketClubManagement.Domain.csproj" />
     <ProjectReference Include="..\CricketClubManagement.Infrastructure\CricketClubManagement.Infrastructure.csproj" />
-  </ItemGroup>
+  </ItemGroup>  
 
 </Project>

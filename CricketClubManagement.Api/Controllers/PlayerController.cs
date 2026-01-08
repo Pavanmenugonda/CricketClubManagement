@@ -1,98 +1,57 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using CricketClubManagement.Infrastructure;
+﻿using CricketClubManagement.Application.DTOs;
+using CricketClubManagement.Application.Interfaces;
 using CricketClubManagement.Domain.Entities;
-using CricketClubManagement.Api.DTOs;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 [ApiController]
-[Route("api/[controller]")]
+[Route("api/players")]
 public class PlayersController : ControllerBase
 {
-    private readonly CricketClubManagementDbContext _context;
+    private readonly IPlayerService _service;
 
-    public PlayersController(CricketClubManagementDbContext context)
+    public PlayersController(IPlayerService service)
     {
-        _context = context;
+        _service = service;
     }
 
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<PlayerDto>>> GetPlayers()
+    public async Task<IActionResult> GetAll()
     {
-        return await _context.Players
-            .Select(p => new PlayerDto
-            {
-                PlayerId = p.PlayerId,
-                PlayerName = p.PlayerName,
-                PlayerAge = p.PlayerAge,
-                PlayerContact = p.PlayerContact,
-                RoleId = p.RoleId
-            })
-            .ToListAsync();
+        return Ok(await _service.GetAllAsync());
     }
 
-    [HttpGet("{id}")]
-    public async Task<ActionResult<PlayerDto>> GetPlayer(int id)
+    [HttpGet("{id:int}")]
+    public async Task<IActionResult> GetById(int id)
     {
-        var player = await _context.Players.FindAsync(id);
+        var player = await _service.GetByIdAsync(id);
         if (player == null) return NotFound();
 
-        return new PlayerDto
-        {
-            PlayerId = player.PlayerId,
-            PlayerName = player.PlayerName,
-            PlayerAge = player.PlayerAge,
-            PlayerContact = player.PlayerContact,
-            RoleId = player.RoleId
-        };
+        return Ok(player);
     }
 
     [HttpPost]
-    public async Task<ActionResult<PlayerDto>> CreatePlayer(CreatePlayerDto dto)
+    public async Task<IActionResult> Create(CreatePlayerDto dto)
     {
-        var player = new Player
-        {
-            PlayerName = dto.PlayerName,
-            PlayerAge = dto.PlayerAge,
-            PlayerContact = dto.PlayerContact,
-            RoleId = dto.RoleId
-        };
-
-        _context.Players.Add(player);
-        await _context.SaveChangesAsync();
-
-        return CreatedAtAction(nameof(GetPlayer), new { id = player.PlayerId }, new PlayerDto
-        {
-            PlayerId = player.PlayerId,
-            PlayerName = player.PlayerName,
-            PlayerAge = player.PlayerAge,
-            PlayerContact = player.PlayerContact,
-            RoleId = player.RoleId
-        });
+        var id = await _service.CreateAsync(dto);
+        return CreatedAtAction(nameof(GetById), new { id }, null);
     }
 
-    [HttpPut("{id}")]
-    public async Task<IActionResult> UpdatePlayer(int id, UpdatePlayerDto dto)
+    [HttpPut("{id:int}")]
+    public async Task<IActionResult> Update(int id, UpdatePlayerDto dto)
     {
-        var player = await _context.Players.FindAsync(id);
-        if (player == null) return NotFound();
+        var updated = await _service.UpdateAsync(id, dto);
+        if (!updated) return NotFound();
 
-        player.PlayerName = dto.PlayerName;
-        player.PlayerAge = dto.PlayerAge;
-        player.PlayerContact = dto.PlayerContact;
-        player.RoleId = dto.RoleId;
-
-        await _context.SaveChangesAsync();
         return NoContent();
     }
 
-    [HttpDelete("{id}")]
-    public async Task<IActionResult> DeletePlayer(int id)
+    [HttpDelete("{id:int}")]
+    public async Task<IActionResult> Delete(int id)
     {
-        var player = await _context.Players.FindAsync(id);
-        if (player == null) return NotFound();
+        var deleted = await _service.DeleteAsync(id);
+        if (!deleted) return NotFound();
 
-        _context.Players.Remove(player);
-        await _context.SaveChangesAsync();
         return NoContent();
     }
 }

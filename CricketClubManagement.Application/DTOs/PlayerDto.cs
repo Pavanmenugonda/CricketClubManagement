@@ -1,4 +1,4 @@
-﻿namespace CricketClubManagement.Api.DTOs
+﻿namespace CricketClubManagement.Application.DTOs
 {
     public class PlayerDto
     {

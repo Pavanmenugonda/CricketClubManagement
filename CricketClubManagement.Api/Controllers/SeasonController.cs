@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using CricketClubManagement.Infrastructure;
 using CricketClubManagement.Domain.Entities;
-using CricketClubManagement.Api.DTOs;
+using CricketClubManagement.Application.DTOs;
 
 namespace CricketClubManagement.Api.Controllers
 {

@@ -1,9 +1,9 @@
 ﻿using CricketClubManagement.Domain.Entities;
-using CricketClubManagement.Infrastructure;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using CricketClubManagement.Api.DTOs;
+using CricketClubManagement.Application.DTOs;
+using CricketClubManagement.Application.Interfaces;
 
 namespace CricketClubManagement.Api.Controllers
 {
@@ -11,83 +11,48 @@ namespace CricketClubManagement.Api.Controllers
     [ApiController]
     public class TeamController : ControllerBase
     {
-        // Injecting DbContext
-        private readonly CricketClubManagementDbContext _context;
+        private readonly ITeamService _service;
 
-        public TeamController(CricketClubManagementDbContext context)
+        public TeamController(ITeamService service)
         {
-            _context = context;
+            _service = service;
         }
 
-        [HttpGet] // Get all teams
-        public async Task<ActionResult<IEnumerable<TeamDto>>> GetTeams()
+        [HttpGet]
+        public async Task<IActionResult> GetAll()
         {
-            return await _context.Teams
-                .Select(t => new TeamDto
-                {
-                    TeamId = t.TeamId,
-                    TeamName = t.TeamName
-                })
-                .ToListAsync();
+            return Ok(await _service.GetAllAsync());
         }
 
-        [HttpGet("{id}")] // Get team by ID
-        public async Task<ActionResult<TeamDto>> GetTeam(int id)
+        [HttpGet("{id:int}")]
+        public async Task<IActionResult> GetById(int id)
         {
-            var team = await _context.Teams.FindAsync(id);
-            if (team == null)
-            {
-                return NotFound();
-            }
-            return  new TeamDto
-                {
-                TeamId = team.TeamId,
-                TeamName = team.TeamName
-            };
-
-        }
-
-        [HttpPost] // Create a new team
-        public async Task<ActionResult<TeamDto>> CreateTeam(CreateTeamDto team)
-        {
-           var newTeam = new Team
-            {
-                TeamName = team.TeamName
-            };
-            _context.Teams.Add(newTeam);
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction(nameof(GetTeam), new { id = newTeam.TeamId }, 
-                new TeamDto
-                {
-                    TeamId = newTeam.TeamId,
-                    TeamName = newTeam.TeamName
-                });
-        }
-
-        [HttpPut("{id}")] // Update an existing team
-        public async Task<IActionResult> UpdateTeam(int id, UpdateTeamDto dto)
-        {
-            var team = await _context.Teams.FindAsync(id);
+            var team = await _service.GetByIdAsync(id);
             if (team == null) return NotFound();
-
-            team.TeamName = dto.TeamName;
-            await _context.SaveChangesAsync();
-            return NoContent();
+            return Ok(team);
         }
 
-        [HttpDelete("{id}")] // Delete a team
-        public async Task<IActionResult> DeleteTeam(int id)
+        [HttpPost]
+        public async Task<IActionResult> Create(CreateTeamDto dto)
         {
-            var team = await _context.Teams.FindAsync(id);
-            if (team == null)
-            {
-                return NotFound();
-            }
-            _context.Teams.Remove(team);
-            await _context.SaveChangesAsync();
+            var id = await _service.CreateAsync(dto);
+            return CreatedAtAction(nameof(GetById), new { id }, null);
+        }
+        [HttpPut("{id:int}")]
+        public async Task<IActionResult> Update(int id, UpdateTeamDto dto)
+        {
+            var updated = await _service.UpdateAsync(id, dto);
+            if (!updated) return NotFound();
             return NoContent();
         }
+        [HttpDelete("{id:int}")]
+        public async Task<IActionResult> Delete(int id)
+        {
+            var deleted = await _service.DeleteAsync(id);
+            if (!deleted) return NotFound();
+            return NoContent();
+        }
+
 
     }
 }
