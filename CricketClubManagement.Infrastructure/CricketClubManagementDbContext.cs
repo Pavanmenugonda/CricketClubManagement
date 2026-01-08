@@ -14,10 +14,7 @@ namespace CricketClubManagement.Infrastructure
         public DbSet<Team> Teams { get; set; }
         public DbSet<Season> Seasons { get; set; }
         public DbSet<Match> Matches { get; set; }
-        public DbSet<PlayerMatch> PlayerMatches { get; set; }
-        public DbSet<TeamSeason> TeamSeasons { get; set; }
         public DbSet<Role> Roles { get; set; }
-        public DbSet<Fee> Fees { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -40,15 +37,6 @@ namespace CricketClubManagement.Infrastructure
                       .WithMany(r => r.Players)
                       .HasForeignKey(p => p.RoleId)
                       .OnDelete(DeleteBehavior.Restrict);
-
-                entity.HasMany(p => p.Fees)
-                      .WithOne(f => f.Player)
-                      .HasForeignKey(f => f.PlayerId)
-                      .OnDelete(DeleteBehavior.Restrict);
-
-                entity.HasMany(p => p.PlayerMatches)
-                      .WithOne(pm => pm.Player)
-                      .HasForeignKey(pm => pm.PlayerId);
             });
 
             // TEAM
@@ -59,11 +47,6 @@ namespace CricketClubManagement.Infrastructure
                 entity.Property(t => t.TeamName)
                       .IsRequired()
                       .HasMaxLength(100);
-
-                entity.HasMany(t => t.TeamSeasons)
-                      .WithOne(ts => ts.Team)
-                      .HasForeignKey(ts => ts.TeamId)
-                      .OnDelete(DeleteBehavior.Restrict);
 
                 entity.HasMany(t => t.HomeMatches)
                       .WithOne(m => m.HomeTeam)
@@ -94,31 +77,7 @@ namespace CricketClubManagement.Infrastructure
                       .OnDelete(DeleteBehavior.Restrict);
             });
 
-            // PLAYERMATCH (bridge)
-            modelBuilder.Entity<PlayerMatch>(entity =>
-            {
-                entity.HasKey(pm => new { pm.PlayerId, pm.MatchId });
-
-                entity.Property(pm => pm.RunsScored).IsRequired(false);
-                entity.Property(pm => pm.WicketsTaken).IsRequired(false);
-                entity.Property(pm => pm.Catches).IsRequired(false);
-            });
-
-            // TEAMSEASON (bridge)
-            modelBuilder.Entity<TeamSeason>(entity =>
-            {
-                entity.HasKey(ts => new { ts.TeamId, ts.SeasonId });
-
-                entity.HasOne(ts => ts.Team)
-                      .WithMany(t => t.TeamSeasons)
-                      .HasForeignKey(ts => ts.TeamId)
-                      .OnDelete(DeleteBehavior.Restrict);
-
-                entity.HasOne(ts => ts.Season)
-                      .WithMany(s => s.TeamSeasons)
-                      .HasForeignKey(ts => ts.SeasonId)
-                      .OnDelete(DeleteBehavior.Restrict);
-            });
+            
 
             // ROLE
             modelBuilder.Entity<Role>(entity =>
@@ -129,25 +88,6 @@ namespace CricketClubManagement.Infrastructure
                       .IsRequired()
                       .HasMaxLength(50);
             });
-
-            // FEE
-            modelBuilder.Entity<Fee>(entity =>
-            {
-                entity.HasKey(f => f.FeeId);
-
-                entity.Property(f => f.Amount)
-                      .IsRequired()
-                      .HasColumnType("decimal(18,2)");
-
-                entity.Property(f => f.FeeDate)
-                      .IsRequired();
-
-                entity.HasOne(f => f.Player)
-                      .WithMany(p => p.Fees)
-                      .HasForeignKey(f => f.PlayerId)
-                      .OnDelete(DeleteBehavior.Restrict);
-            });
-
             // SEASON
             modelBuilder.Entity<Season>(entity =>
             {

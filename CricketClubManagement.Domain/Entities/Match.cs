@@ -18,6 +18,5 @@ namespace CricketClubManagement.Domain.Entities
         public Season? Season { get; set; }  // many-to-one
         public Team? HomeTeam { get; set; }  // many-to-one
         public Team? AwayTeam { get; set; }  // many-to-one
-        public ICollection<PlayerMatch>? PlayerMatches { get; set; }  // many-to-many via PlayerMatch
     }
 }

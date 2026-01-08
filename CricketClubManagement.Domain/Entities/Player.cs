@@ -14,8 +14,6 @@ namespace CricketClubManagement.Domain.Entities
 
         // Navigation properties
         public Role? Role { get; set; }  // many-to-one
-        public ICollection<PlayerMatch> PlayerMatches { get; set; } = new List<PlayerMatch>();  // many-to-many via PlayerMatch
-        public ICollection<Fee> Fees { get; set; } = new List<Fee>(); // one-to-many
     }
 
 }

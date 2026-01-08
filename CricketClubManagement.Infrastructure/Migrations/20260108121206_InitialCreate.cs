@@ -109,84 +109,6 @@ namespace CricketClubManagement.Infrastructure.Migrations
                         onDelete: ReferentialAction.Restrict);
                 });
 
-            migrationBuilder.CreateTable(
-                name: "TeamSeasons",
-                columns: table => new
-                {
-                    TeamId = table.Column<int>(type: "int", nullable: false),
-                    SeasonId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_TeamSeasons", x => new { x.TeamId, x.SeasonId });
-                    table.ForeignKey(
-                        name: "FK_TeamSeasons_Seasons_SeasonId",
-                        column: x => x.SeasonId,
-                        principalTable: "Seasons",
-                        principalColumn: "SeasonId",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_TeamSeasons_Teams_TeamId",
-                        column: x => x.TeamId,
-                        principalTable: "Teams",
-                        principalColumn: "TeamId",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Fees",
-                columns: table => new
-                {
-                    FeeId = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    PlayerId = table.Column<int>(type: "int", nullable: false),
-                    FeeDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Amount = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    FeeStatus = table.Column<string>(type: "nvarchar(max)", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Fees", x => x.FeeId);
-                    table.ForeignKey(
-                        name: "FK_Fees_Players_PlayerId",
-                        column: x => x.PlayerId,
-                        principalTable: "Players",
-                        principalColumn: "PlayerId",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "PlayerMatches",
-                columns: table => new
-                {
-                    PlayerId = table.Column<int>(type: "int", nullable: false),
-                    MatchId = table.Column<int>(type: "int", nullable: false),
-                    RunsScored = table.Column<int>(type: "int", nullable: true),
-                    WicketsTaken = table.Column<int>(type: "int", nullable: true),
-                    Catches = table.Column<int>(type: "int", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_PlayerMatches", x => new { x.PlayerId, x.MatchId });
-                    table.ForeignKey(
-                        name: "FK_PlayerMatches_Matches_MatchId",
-                        column: x => x.MatchId,
-                        principalTable: "Matches",
-                        principalColumn: "MatchId",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_PlayerMatches_Players_PlayerId",
-                        column: x => x.PlayerId,
-                        principalTable: "Players",
-                        principalColumn: "PlayerId",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Fees_PlayerId",
-                table: "Fees",
-                column: "PlayerId");
-
             migrationBuilder.CreateIndex(
                 name: "IX_Matches_AwayTeamId",
                 table: "Matches",
@@ -203,33 +125,14 @@ namespace CricketClubManagement.Infrastructure.Migrations
                 column: "SeasonId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_PlayerMatches_MatchId",
-                table: "PlayerMatches",
-                column: "MatchId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Players_RoleId",
                 table: "Players",
                 column: "RoleId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_TeamSeasons_SeasonId",
-                table: "TeamSeasons",
-                column: "SeasonId");
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropTable(
-                name: "Fees");
-
-            migrationBuilder.DropTable(
-                name: "PlayerMatches");
-
-            migrationBuilder.DropTable(
-                name: "TeamSeasons");
-
             migrationBuilder.DropTable(
                 name: "Matches");
 

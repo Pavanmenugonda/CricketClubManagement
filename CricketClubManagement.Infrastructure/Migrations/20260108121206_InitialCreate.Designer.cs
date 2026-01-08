@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CricketClubManagement.Infrastructure.Migrations
 {
     [DbContext(typeof(CricketClubManagementDbContext))]
-    [Migration("20260108024733_InitialCreate")]
+    [Migration("20260108121206_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -24,33 +24,6 @@ namespace CricketClubManagement.Infrastructure.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
-
-            modelBuilder.Entity("CricketClubManagement.Domain.Entities.Fee", b =>
-                {
-                    b.Property<int>("FeeId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("FeeId"));
-
-                    b.Property<decimal>("Amount")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<DateTime>("FeeDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("FeeStatus")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("PlayerId")
-                        .HasColumnType("int");
-
-                    b.HasKey("FeeId");
-
-                    b.HasIndex("PlayerId");
-
-                    b.ToTable("Fees");
-                });
 
             modelBuilder.Entity("CricketClubManagement.Domain.Entities.Match", b =>
                 {
@@ -118,30 +91,6 @@ namespace CricketClubManagement.Infrastructure.Migrations
                     b.ToTable("Players");
                 });
 
-            modelBuilder.Entity("CricketClubManagement.Domain.Entities.PlayerMatch", b =>
-                {
-                    b.Property<int>("PlayerId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("MatchId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("Catches")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("RunsScored")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("WicketsTaken")
-                        .HasColumnType("int");
-
-                    b.HasKey("PlayerId", "MatchId");
-
-                    b.HasIndex("MatchId");
-
-                    b.ToTable("PlayerMatches");
-                });
-
             modelBuilder.Entity("CricketClubManagement.Domain.Entities.Role", b =>
                 {
                     b.Property<int>("RoleId")
@@ -202,32 +151,6 @@ namespace CricketClubManagement.Infrastructure.Migrations
                     b.ToTable("Teams");
                 });
 
-            modelBuilder.Entity("CricketClubManagement.Domain.Entities.TeamSeason", b =>
-                {
-                    b.Property<int>("TeamId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("SeasonId")
-                        .HasColumnType("int");
-
-                    b.HasKey("TeamId", "SeasonId");
-
-                    b.HasIndex("SeasonId");
-
-                    b.ToTable("TeamSeasons");
-                });
-
-            modelBuilder.Entity("CricketClubManagement.Domain.Entities.Fee", b =>
-                {
-                    b.HasOne("CricketClubManagement.Domain.Entities.Player", "Player")
-                        .WithMany("Fees")
-                        .HasForeignKey("PlayerId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("Player");
-                });
-
             modelBuilder.Entity("CricketClubManagement.Domain.Entities.Match", b =>
                 {
                     b.HasOne("CricketClubManagement.Domain.Entities.Team", "AwayTeam")
@@ -266,56 +189,6 @@ namespace CricketClubManagement.Infrastructure.Migrations
                     b.Navigation("Role");
                 });
 
-            modelBuilder.Entity("CricketClubManagement.Domain.Entities.PlayerMatch", b =>
-                {
-                    b.HasOne("CricketClubManagement.Domain.Entities.Match", "Match")
-                        .WithMany("PlayerMatches")
-                        .HasForeignKey("MatchId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("CricketClubManagement.Domain.Entities.Player", "Player")
-                        .WithMany("PlayerMatches")
-                        .HasForeignKey("PlayerId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Match");
-
-                    b.Navigation("Player");
-                });
-
-            modelBuilder.Entity("CricketClubManagement.Domain.Entities.TeamSeason", b =>
-                {
-                    b.HasOne("CricketClubManagement.Domain.Entities.Season", "Season")
-                        .WithMany("TeamSeasons")
-                        .HasForeignKey("SeasonId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("CricketClubManagement.Domain.Entities.Team", "Team")
-                        .WithMany("TeamSeasons")
-                        .HasForeignKey("TeamId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("Season");
-
-                    b.Navigation("Team");
-                });
-
-            modelBuilder.Entity("CricketClubManagement.Domain.Entities.Match", b =>
-                {
-                    b.Navigation("PlayerMatches");
-                });
-
-            modelBuilder.Entity("CricketClubManagement.Domain.Entities.Player", b =>
-                {
-                    b.Navigation("Fees");
-
-                    b.Navigation("PlayerMatches");
-                });
-
             modelBuilder.Entity("CricketClubManagement.Domain.Entities.Role", b =>
                 {
                     b.Navigation("Players");
@@ -324,8 +197,6 @@ namespace CricketClubManagement.Infrastructure.Migrations
             modelBuilder.Entity("CricketClubManagement.Domain.Entities.Season", b =>
                 {
                     b.Navigation("Matches");
-
-                    b.Navigation("TeamSeasons");
                 });
 
             modelBuilder.Entity("CricketClubManagement.Domain.Entities.Team", b =>
@@ -333,8 +204,6 @@ namespace CricketClubManagement.Infrastructure.Migrations
                     b.Navigation("AwayMatches");
 
                     b.Navigation("HomeMatches");
-
-                    b.Navigation("TeamSeasons");
                 });
 #pragma warning restore 612, 618
         }

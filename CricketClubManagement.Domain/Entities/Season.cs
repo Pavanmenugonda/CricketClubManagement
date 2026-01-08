@@ -12,7 +12,6 @@ namespace CricketClubManagement.Domain.Entities
         public DateTime SeasonEndDate { get; set; }
 
         // Navigation properties
-        public ICollection<TeamSeason>? TeamSeasons { get; set; }  // many-to-many via TeamSeason
         public ICollection<Match>? Matches { get; set; }  // one-to-many
     }
 }
