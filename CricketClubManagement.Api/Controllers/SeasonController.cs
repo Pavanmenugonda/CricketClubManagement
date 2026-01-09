@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using CricketClubManagement.Infrastructure;
 using CricketClubManagement.Domain.Entities;
 using CricketClubManagement.Application.DTOs;
+using CricketClubManagement.Application.Interfaces;
 
 namespace CricketClubManagement.Api.Controllers
 {
@@ -10,89 +11,47 @@ namespace CricketClubManagement.Api.Controllers
     [ApiController]
     public class SeasonController : ControllerBase
     {
-        private readonly CricketClubManagementDbContext _context;
-        public SeasonController(CricketClubManagementDbContext context)
+        private readonly ISeasonService _service;
+
+        public SeasonController(ISeasonService service)
         {
-            _context = context;
+            _service = service;
         }
 
-        [HttpGet] // GET: api/Season
-        public async Task<ActionResult<IEnumerable<SeasonDto>>> GetSeasons()
+        [HttpGet]
+        public async Task<IActionResult> GetAll()
         {
-            return await _context.Seasons
-                .Select(s => new SeasonDto
-                {
-                    SeasonId = s.SeasonId,
-                    SeasonTitle = s.SeasonTitle,
-                    SeasonStartDate = s.SeasonStartDate,
-                    SeasonEndDate = s.SeasonEndDate
-                })
-                .ToListAsync();
+            return Ok(await _service.GetAllAsync());
         }
-        [HttpGet("{id}")]
-        public async Task<ActionResult<SeasonDto>> GetSeason(int id)
+
+        [HttpGet("{id:int}")]
+        public async Task<IActionResult> GetById(int id)
         {
-            var season = await _context.Seasons.FindAsync(id);
+            var season = await _service.GetByIdAsync(id);
             if (season == null) return NotFound();
-            var seasonDto = new SeasonDto
-            {
-                SeasonId = season.SeasonId,
-                SeasonTitle = season.SeasonTitle,
-                SeasonStartDate = season.SeasonStartDate,
-                SeasonEndDate = season.SeasonEndDate
-            };
-            return seasonDto;
+            return Ok(season);
+        }
+        [HttpPost]
+        public async Task<IActionResult> Create(CreateSeasonDto dto)
+        {
+            var id = await _service.CreateAsync(dto);
+            return CreatedAtAction(nameof(GetById), new { id }, null);
         }
 
-        [HttpPost] // POST: api/Season
-        public async Task<ActionResult<SeasonDto>> CreateSeason(CreateSeasonDto dto)
+        [HttpPut("{id:int}")]
+        public async Task<IActionResult> Update(int id, UpdateSeasonDto dto)
         {
-            var season = new Season
-            {
-                SeasonTitle = dto.SeasonTitle,
-                SeasonStartDate = dto.SeasonStartDate,
-                SeasonEndDate = dto.SeasonEndDate
-            };
-            _context.Seasons.Add(season);
-            await _context.SaveChangesAsync();
-            var seasonDto = new SeasonDto
-            {
-                SeasonId = season.SeasonId,
-                SeasonTitle = season.SeasonTitle,
-                SeasonStartDate = season.SeasonStartDate,
-                SeasonEndDate = season.SeasonEndDate
-            };
-            return CreatedAtAction(nameof(GetSeason), new { id = season.SeasonId }, seasonDto);
-        }
-        [HttpPut] // PUT: api/Season/5
-        public async Task<ActionResult<SeasonDto>> UpdateSeason(int id, CreateSeasonDto dto)
-        {
-            var season = await _context.Seasons.FindAsync(id);
-            if (season == null) return NotFound();
-            season.SeasonTitle = dto.SeasonTitle;
-            season.SeasonStartDate = dto.SeasonStartDate;
-            season.SeasonEndDate = dto.SeasonEndDate;
-            await _context.SaveChangesAsync();
-            var seasonDto = new SeasonDto
-            {
-                SeasonId = season.SeasonId,
-                SeasonTitle = season.SeasonTitle,
-                SeasonStartDate = season.SeasonStartDate,
-                SeasonEndDate = season.SeasonEndDate
-            };
-            return Ok(seasonDto);
-
-        }
-        [HttpDelete] // delete: api/Season/5
-        public async Task<IActionResult> DeleteSeason(int id)
-        {
-            var season = await _context.Seasons.FindAsync(id);
-            if (season == null) return NotFound();
-
-            _context.Seasons.Remove(season);
-            await _context.SaveChangesAsync();
-
+            var updated = await _service.UpdateAsync(id, dto);
+            if (!updated) return NotFound();
             return NoContent();
         }
+        [HttpDelete("{id:int}")]
+        public async Task<IActionResult> Delete(int id)
+        {
+            var deleted = await _service.DeleteAsync(id);
+            if (!deleted) return NotFound();
+            return NoContent();
+        }
+
     }
 }

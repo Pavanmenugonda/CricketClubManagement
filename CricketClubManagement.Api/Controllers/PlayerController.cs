@@ -3,11 +3,16 @@ using CricketClubManagement.Application.Interfaces;
 using CricketClubManagement.Domain.Entities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations;
 
-[ApiController]
-[Route("api/players")]
-public class PlayersController : ControllerBase
+
+namespace CricketClubManagement.Api.Controllers
 {
+
+  [ApiController]
+  [Route("api/players")]
+  public class PlayersController : ControllerBase
+  {
     private readonly IPlayerService _service;
 
     public PlayersController(IPlayerService service)
@@ -29,21 +34,40 @@ public class PlayersController : ControllerBase
 
         return Ok(player);
     }
+      [HttpPost]
+        public async Task<IActionResult> Create([FromBody] CreatePlayerDto dto)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState); // returns 400 if validation fails
 
-    [HttpPost]
-    public async Task<IActionResult> Create(CreatePlayerDto dto)
-    {
-        var id = await _service.CreateAsync(dto);
-        return CreatedAtAction(nameof(GetById), new { id }, null);
-    }
+            try
+            {
+                var id = await _service.CreateAsync(dto);
+                return CreatedAtAction(nameof(GetById), new { id }, null);
+            }
+            catch (ValidationException ex)
+            {
+                return BadRequest(new { error = ex.Message });
+            }
+        }
 
-    [HttpPut("{id:int}")]
+     [HttpPut("{id:int}")]
     public async Task<IActionResult> Update(int id, UpdatePlayerDto dto)
     {
-        var updated = await _service.UpdateAsync(id, dto);
-        if (!updated) return NotFound();
+           if (!ModelState.IsValid)
+            return BadRequest(ModelState); // returns 400 if validation fails
 
-        return NoContent();
+            try
+            {
+                var updated = await _service.UpdateAsync(id, dto);
+                if (!updated) return NotFound();
+            }
+            catch (ValidationException ex)
+            {
+                return BadRequest(new { error = ex.Message });
+            }
+
+            return NoContent();
     }
 
     [HttpDelete("{id:int}")]
@@ -54,4 +78,5 @@ public class PlayersController : ControllerBase
 
         return NoContent();
     }
+  }
 }

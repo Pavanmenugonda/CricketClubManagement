@@ -1,8 +1,8 @@
+using CricketClubManagement.Api.Middleware;
 using CricketClubManagement.Application.Interfaces;
-using Microsoft.EntityFrameworkCore;
-using CricketClubManagement.Infrastructure.Services;
 using CricketClubManagement.Infrastructure;
-
+using CricketClubManagement.Infrastructure.Services;
+using Microsoft.EntityFrameworkCore;
 //using Microsoft.OpenApi.Models; // Add this using directive
 using Swashbuckle.AspNetCore.SwaggerGen; // Add this using directive
 
@@ -24,6 +24,9 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddScoped<IPlayerService, PlayerService>();
 builder.Services.AddScoped<ITeamService, TeamService>();
+builder.Services.AddScoped<IRoleService, RoleService>();
+builder.Services.AddScoped<IMatchService, MatchService>();
+builder.Services.AddScoped<ISeasonService, SeasonService>();
 
 var app = builder.Build();
 
@@ -37,8 +40,14 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+app.UseMiddleware<ExceptionMiddleware>();
+
 app.UseAuthorization();
 
 app.MapControllers();
 
 app.Run();
+
+
+// For integration testing purposes
+public partial class Program { }

@@ -3,78 +3,76 @@ using Microsoft.EntityFrameworkCore;
 using CricketClubManagement.Infrastructure;
 using CricketClubManagement.Domain.Entities;
 using CricketClubManagement.Application.DTOs;
+using CricketClubManagement.Application.Interfaces;
+using System.ComponentModel.DataAnnotations;
+
 namespace CricketClubManagement.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
     public class MatchController : ControllerBase
     {
-        private readonly CricketClubManagementDbContext _context;
+        private readonly IMatchService _service;
 
-        public MatchController(CricketClubManagementDbContext context)
+        public MatchController(IMatchService service)
         {
-            _context = context;
+            _service = service;
         }
+
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<MatchDto>>> GetMatches()
+        public async Task<IActionResult> GetAll()
         {
-            return await _context.Matches
-                .Select(m => new MatchDto
-                {
-                    MatchId = m.MatchId,
-                    MatchDate = m.MatchDate,
-                    MatchName = m.MatchName,
-                })
-                .ToListAsync();
+            return Ok(await _service.GetMatches());
+
         }
-        [HttpGet("{id}")]
-        public async Task<ActionResult<MatchDto>> GetMatch(int id)
+        [HttpGet("{id:int}")]
+        public async Task<IActionResult> GetById(int id)
         {
-            var match = await _context.Matches.FindAsync(id);
+            var match = await _service.GetMatch(id);
             if (match == null) return NotFound();
-            return new MatchDto
-            {
-                MatchId = match.MatchId,
-                MatchDate = match.MatchDate,
-                MatchName = match.MatchName,
-            };
+            return Ok(match);
         }
         [HttpPost]
-        public async Task<ActionResult<MatchDto>> CreateMatch(CreateMatchDto dto)
+        public async Task<IActionResult> Create(CreateMatchDto dto)
         {
-            var match = new Match
+            if(!ModelState.IsValid)
             {
-                MatchName = dto.MatchName,
-                MatchDate = dto.MatchDate,
-            };
-            _context.Matches.Add(match);
-            await _context.SaveChangesAsync();
-            var matchDto = new MatchDto
-            {
-                MatchId = match.MatchId,
-                MatchDate = match.MatchDate,
-                MatchName = match.MatchName,
-            };
-            return CreatedAtAction(nameof(GetMatch), new { id = match.MatchId }, matchDto);
-        }
+                return BadRequest(ModelState);
+            }
 
-        [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateMatch(int id, UpdateMatchDto dto)
+            try
+            {
+                var id = await _service.CreateMatch(dto);
+            }
+
+            catch (ValidationException ex)
+            {
+                return BadRequest(new { error = ex.Message });
+            }
+            return CreatedAtAction(nameof(GetById), new { id = dto }, dto);
+
+        }
+        [HttpPut("{id:int}")]
+        public async Task<IActionResult> Update(int id, UpdateMatchDto dto)
         {
-            var match = await _context.Matches.FindAsync(id);
-            if (match == null) return NotFound();
-            match.MatchName = dto.MatchName;
-            match.MatchDate = dto.MatchDate;
-            await _context.SaveChangesAsync();
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+            try
+            {
+                var updated = await _service.UpdateMatch(id, dto);
+                if (!updated) return NotFound();
+            }
+            catch (ValidationException ex)
+            {
+                return BadRequest(new { error = ex.Message });
+            }
+            
             return NoContent();
         }
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteMatch(int id)
+        [HttpDelete("{id:int}")]
+        public async Task<IActionResult> Delete(int id)
         {
-            var match = await _context.Matches.FindAsync(id);
-            if (match == null) return NotFound();
-            _context.Matches.Remove(match);
-            await _context.SaveChangesAsync();
+            await _service.DeleteMatch(id);
             return NoContent();
         }
     }

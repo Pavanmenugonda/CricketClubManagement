@@ -11,12 +11,9 @@ namespace CricketClubManagement.Domain.Entities
         public DateTime MatchDate { get; set; }
 
         public int SeasonId { get; set; }
-        public int HomeTeamId { get; set; }
-        public int AwayTeamId { get; set; }
 
         // Navigation properties
         public Season? Season { get; set; }  // many-to-one
-        public Team? HomeTeam { get; set; }  // many-to-one
-        public Team? AwayTeam { get; set; }  // many-to-one
+        
     }
 }

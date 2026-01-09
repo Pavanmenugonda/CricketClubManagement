@@ -44,6 +44,11 @@ namespace CricketClubManagement.Infrastructure.Services
         }
         public async Task<int> CreateAsync(CreateTeamDto dto)
         {
+            if(dto == null)
+                throw new ArgumentNullException(nameof(dto));
+            if(dto.TeamName == null)
+                throw new ArgumentException("Team name is required", nameof(dto.TeamName));
+
             var team = new Team
             {
                 TeamName = dto.TeamName
@@ -57,9 +62,11 @@ namespace CricketClubManagement.Infrastructure.Services
         {
             var team = await _context.Teams.FindAsync(id);
             if (team == null)
-            {
                 return false;
-            }
+            
+            if(dto.TeamName == null)
+                throw new ArgumentException("Team name is required", nameof(dto.TeamName));  
+
             team.TeamName = dto.TeamName;
             await _context.SaveChangesAsync();
             return true;

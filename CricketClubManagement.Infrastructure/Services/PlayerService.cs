@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations;
 
 namespace CricketClubManagement.Infrastructure.Services
 {
@@ -45,10 +46,15 @@ namespace CricketClubManagement.Infrastructure.Services
 
         public async Task<int> CreateAsync(CreatePlayerDto dto)
         {
+            var roleExists = await _context.Roles.AnyAsync(r => r.RoleId == dto.RoleId);
+            if (!roleExists)
+                throw new ValidationException($"Role does not exist");
+
             var player = new Player
-            {
+             {
                 PlayerName = dto.PlayerName,
                 PlayerAge = dto.PlayerAge,
+                PlayerContact = dto.PlayerContact,
                 RoleId = dto.RoleId
             };
 
@@ -63,8 +69,14 @@ namespace CricketClubManagement.Infrastructure.Services
             var player = await _context.Players.FindAsync(id);
             if (player == null) return false;
 
+            var roleExists = await _context.Roles.AnyAsync(r => r.RoleId == dto.RoleId);
+            if (!roleExists)
+                throw new ValidationException($"Role with ID {dto.RoleId} does not exist");
+
             player.PlayerName = dto.PlayerName;
             player.PlayerAge = dto.PlayerAge;
+            player.PlayerContact = dto.PlayerContact;
+            player.RoleId = dto.RoleId;
 
             await _context.SaveChangesAsync();
             return true;
@@ -72,6 +84,9 @@ namespace CricketClubManagement.Infrastructure.Services
 
         public async Task<bool> DeleteAsync(int id)
         {
+            if (id <= 0)
+                throw new ValidationException("Invalid player ID");
+
             var player = await _context.Players.FindAsync(id);
             if (player == null) return false;
 

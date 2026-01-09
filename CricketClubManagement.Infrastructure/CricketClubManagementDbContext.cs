@@ -48,15 +48,15 @@ namespace CricketClubManagement.Infrastructure
                       .IsRequired()
                       .HasMaxLength(100);
 
-                entity.HasMany(t => t.HomeMatches)
-                      .WithOne(m => m.HomeTeam)
-                      .HasForeignKey(m => m.HomeTeamId)
-                      .OnDelete(DeleteBehavior.Restrict);
+                //entity.HasMany(t => t.HomeMatches)
+                //      .WithOne(m => m.HomeTeam)
+                //      .HasForeignKey(m => m.HomeTeamId)
+                //      .OnDelete(DeleteBehavior.Restrict);
 
-                entity.HasMany(t => t.AwayMatches)
-                      .WithOne(m => m.AwayTeam)
-                      .HasForeignKey(m => m.AwayTeamId)
-                      .OnDelete(DeleteBehavior.Restrict);
+                //entity.HasMany(t => t.AwayMatches)
+                //      .WithOne(m => m.AwayTeam)
+                //      .HasForeignKey(m => m.AwayTeamId)
+                //      .OnDelete(DeleteBehavior.Restrict);
             });
 
             // MATCH

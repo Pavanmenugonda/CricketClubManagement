@@ -4,6 +4,8 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using CricketClubManagement.Application.DTOs;
+using CricketClubManagement.Application.Interfaces;
+using System.ComponentModel.DataAnnotations;
 
 namespace CricketClubManagement.Api.Controllers
 {
@@ -12,76 +14,72 @@ namespace CricketClubManagement.Api.Controllers
     [ApiController]
     public class RoleController : ControllerBase
     {
-        private readonly CricketClubManagementDbContext _context;
+        private readonly IRoleService _service;
 
-        public RoleController(CricketClubManagementDbContext context)
+        public RoleController(IRoleService service)
         {
-            _context = context;
+            _service = service;
         }
 
-        [HttpGet] // Get all roles
-        public async Task<ActionResult<IEnumerable<RoleDto>>> GetRoles()
+        [HttpGet]
+        public async Task<IActionResult> GetAll()
         {
-            return await _context.Roles
-                .Select(r => new RoleDto
-                {
-                    RoleId = r.RoleId,
-                    RoleName = r.RoleName
-                })
-                .ToListAsync();
+            return Ok(await _service.GetAllAsync());
         }
-        [HttpGet("{id}")] // Get role by ID
-        public async Task<ActionResult<RoleDto>> GetRole(int id)
+
+        [HttpGet("{id:int}")]
+        public async Task<IActionResult> GetById(int id)
         {
-            var role = await _context.Roles.FindAsync(id);
-            if (role == null)
+            var role = await _service.GetByIdAsync(id);
+            if (role == null) return NotFound();
+            return Ok(role);
+        }
+        [HttpPost]
+        public async Task<IActionResult> Create(CreateRoleDto dto)
+        {
+            if(!ModelState.IsValid)
             {
-                return NotFound();
+                return BadRequest(ModelState);
             }
-            return new RoleDto
+
+            try
             {
-                RoleId = role.RoleId,
-                RoleName = role.RoleName
-            };
-        }
-        [HttpPost] // Create a new role
-        public async Task<ActionResult<RoleDto>> CreateRole(CreateRoleDto dto)
-        {
-            var role = new Role
-            {
-                RoleName = dto.RoleName
-            };
-            _context.Roles.Add(role);
-            await _context.SaveChangesAsync();
-            return CreatedAtAction(nameof(GetRole), new { id = role.RoleId }, new RoleDto
-            {
-                RoleId = role.RoleId,
-                RoleName = role.RoleName
-            });
-        }
-        [HttpPut("{id}")] // Update an existing role
-        public async Task<IActionResult> UpdateRole(int id, UpdateRoleDto dto)
-        {
-            var role = await _context.Roles.FindAsync(id);
-            if (role == null)
-            {
-                return NotFound();
+                var id = await _service.CreateAsync(dto);
+                return CreatedAtAction(nameof(GetById), new { id }, null);
             }
-            role.RoleName = dto.RoleName;
-            await _context.SaveChangesAsync();
+
+            catch (ValidationException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+        [HttpPut("{id:int}")]
+        public async Task<IActionResult> Update(int id, UpdateRoleDto dto)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            try
+            {
+                var updated = await _service.UpdateAsync(id, dto);
+                if (!updated) return NotFound();
+            }
+            catch (ValidationException ex)
+            {
+                return BadRequest(ex.Message);
+            }
             return NoContent();
         }
-        [HttpDelete("{id}")] // Delete a role
-        public async Task<IActionResult> DeleteRole(int id)
+
+        [HttpDelete("{id:int}")]
+        public async Task<IActionResult> Delete(int id)
         {
-            var role = await _context.Roles.FindAsync(id);
-            if (role == null)
-            {
-                return NotFound();
-            }
-            _context.Roles.Remove(role);
-            await _context.SaveChangesAsync();
+            var deleted = await _service.DeleteAsync(id);
+            if (!deleted) return NotFound();
             return NoContent();
         }
+
     }
+
 }
