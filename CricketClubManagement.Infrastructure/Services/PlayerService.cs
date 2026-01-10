@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Text;
 using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
+using CricketClubManagement.Application.Common;
 
 namespace CricketClubManagement.Infrastructure.Services
 {
@@ -19,17 +20,47 @@ namespace CricketClubManagement.Infrastructure.Services
             _context = context;
         }
 
-        public async Task<IEnumerable<PlayerDto>> GetAllAsync()
+        public async Task<PagedResult<PlayerDto>> GetAllAsync(
+             int page,
+             int pageSize,
+             int? roleId)
         {
-            return await _context.Players
+            if (page <= 0) page = 1;
+            if (pageSize <= 0 || pageSize > 100) pageSize = 10;
+
+            var query = _context.Players.AsQueryable();
+
+            // Filtering
+            if (roleId.HasValue)
+            {
+                query = query.Where(p => p.RoleId == roleId.Value);
+            }
+
+            var totalCount = await query.CountAsync();
+
+            var items = await query
+                .OrderBy(p => p.PlayerName)
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
                 .Select(p => new PlayerDto
                 {
                     PlayerId = p.PlayerId,
                     PlayerName = p.PlayerName,
-                    PlayerAge = p.PlayerAge
+                    PlayerAge = p.PlayerAge,
+                    PlayerContact = p.PlayerContact,
+                    RoleId = p.RoleId
                 })
                 .ToListAsync();
+
+            return new PagedResult<PlayerDto>
+            {
+                Items = items,
+                Page = page,
+                PageSize = pageSize,
+                TotalCount = totalCount
+            };
         }
+
 
         public async Task<PlayerDto?> GetByIdAsync(int id)
         {
@@ -94,6 +125,7 @@ namespace CricketClubManagement.Infrastructure.Services
             await _context.SaveChangesAsync();
             return true;
         }
+
     }
 
 }

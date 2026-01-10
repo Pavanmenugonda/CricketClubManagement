@@ -1,4 +1,5 @@
-﻿using CricketClubManagement.Application.DTOs;
+﻿using CricketClubManagement.Application.Common;
+using CricketClubManagement.Application.DTOs;
 using CricketClubManagement.Application.Interfaces;
 using CricketClubManagement.Domain.Entities;
 using Microsoft.AspNetCore.Mvc;
@@ -20,53 +21,36 @@ namespace CricketClubManagement.Api.Controllers
         _service = service;
     }
 
-    [HttpGet]
-    public async Task<IActionResult> GetAll()
-    {
-        return Ok(await _service.GetAllAsync());
-    }
+        [HttpGet]
+        public async Task<IActionResult> GetPlayers(
+        [FromQuery] int page = 1,
+        [FromQuery] int pageSize = 10,
+        [FromQuery] int? roleId = null)
+        {
+            var result = await _service.GetAllAsync(page, pageSize, roleId);
+            return Ok(result);
+        }
 
-    [HttpGet("{id:int}")]
+
+        [HttpGet("{id:int}")]
     public async Task<IActionResult> GetById(int id)
     {
         var player = await _service.GetByIdAsync(id);
-        if (player == null) return NotFound();
 
-        return Ok(player);
-    }
+        if (player == null) return NotFound();
+         return Ok(ApiResponse<PlayerDto>.Ok(player));
+        }
       [HttpPost]
         public async Task<IActionResult> Create([FromBody] CreatePlayerDto dto)
         {
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState); // returns 400 if validation fails
-
-            try
-            {
-                var id = await _service.CreateAsync(dto);
-                return CreatedAtAction(nameof(GetById), new { id }, null);
-            }
-            catch (ValidationException ex)
-            {
-                return BadRequest(new { error = ex.Message });
-            }
+            var id = await _service.CreateAsync(dto);
+            return CreatedAtAction(nameof(GetById), new { id }, ApiResponse<int>.Ok(id));
         }
 
      [HttpPut("{id:int}")]
     public async Task<IActionResult> Update(int id, UpdatePlayerDto dto)
     {
-           if (!ModelState.IsValid)
-            return BadRequest(ModelState); // returns 400 if validation fails
-
-            try
-            {
-                var updated = await _service.UpdateAsync(id, dto);
-                if (!updated) return NotFound();
-            }
-            catch (ValidationException ex)
-            {
-                return BadRequest(new { error = ex.Message });
-            }
-
+            await _service.UpdateAsync(id, dto);
             return NoContent();
     }
 
