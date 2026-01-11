@@ -1,20 +1,31 @@
-import { NgModule, provideBrowserGlobalErrorListeners } from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
+//// Required for Angular multi-browser support
+//import { BrowserModule } from '@angular/platform-browser';
 
-import { AppRoutingModule } from './app-routing-module';
-import { App } from './app';
+//import { NgModule, provideBrowserGlobalErrorListeners } from '@angular/core';
 
-@NgModule({
-  declarations: [
-    App
-  ],
-  imports: [
-    BrowserModule,
-    AppRoutingModule
-  ],
-  providers: [
-    provideBrowserGlobalErrorListeners()
-  ],
-  bootstrap: [App]
-})
-export class AppModule { }
+//import { AppRoutingModule } from './app-routing-module';
+//import { App } from './app';
+//import { FormsModule } from '@angular/forms';
+//import { Login } from './login/login
+
+
+
+//@NgModule({
+//  declarations: [
+//    App,
+//    Login
+//  ],
+//  imports: [
+//    BrowserModule,
+//    AppRoutingModule,
+//    FormsModule,
+//  //HttpClientModule
+//  ],
+//  providers: [
+//    provideBrowserGlobalErrorListeners()
+//  ],
+//  bootstrap: [App]
+//})
+
+
+//export class AppModule { }

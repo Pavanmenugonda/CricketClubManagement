@@ -28,6 +28,18 @@ builder.Services.AddScoped<IRoleService, RoleService>();
 builder.Services.AddScoped<IMatchService, MatchService>();
 builder.Services.AddScoped<ISeasonService, SeasonService>();
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAngular",
+        policy =>
+        {
+            policy
+                .WithOrigins("http://localhost:58232")
+                .AllowAnyHeader()
+                .AllowAnyMethod();
+        });
+});
+
 var app = builder.Build();
 
 //// Configure the HTTP request pipeline.
@@ -43,6 +55,8 @@ app.UseHttpsRedirection();
 app.UseMiddleware<ExceptionMiddleware>();
 
 app.UseAuthorization();
+
+app.UseCors("AllowAngular");
 
 app.MapControllers();
 

@@ -1,0 +1,14 @@
+<h2>Players</h2>
+
+<div *ngIf="loading">Loading...</div>
+<div *ngIf="error">{{ error }}</div>
+
+<ul *ngIf="!loading && players.length">
+  <li *ngFor="let player of players">
+    {{ player.playerName }} (Age: {{ player.playerAge }})
+  </li>
+</ul>
+
+<div *ngIf="!loading && !players.length">
+  No players found.
+</div>
