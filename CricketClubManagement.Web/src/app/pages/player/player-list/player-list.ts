@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { PlayerService } from '../../../services/player';
 import { RouterModule } from '@angular/router';
 import { Router } from "@angular/router"; 
+import { Player } from '../../../services/player.model';
 
 @Component({
   selector: 'app-player-list',
@@ -13,7 +14,7 @@ import { Router } from "@angular/router";
 })
 export class PlayerList implements OnInit {
 
-  players: any[] = [];
+  players: Player[] = [];
   loading = true;
   error = '';
 

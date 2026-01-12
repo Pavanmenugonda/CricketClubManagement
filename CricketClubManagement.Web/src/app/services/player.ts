@@ -3,9 +3,12 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
 import { Player } from './player.model';
+import { BehaviorSubject } from 'rxjs'; 
 
 @Injectable({ providedIn: 'root' })
+
 export class PlayerService {
+
   private baseUrl = `${environment.apiBaseUrl}/players`;
 
   constructor(private http: HttpClient) { }

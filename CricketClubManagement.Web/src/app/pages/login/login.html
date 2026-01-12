@@ -1,13 +1,21 @@
-<div class="login-container">
-  <h2>Login</h2>
-  <form (ngSubmit)="login()">
-    <label>Username</label>
-    <input [(ngModel)]="username" name="username" required />
-
-    <label>Password</label>
-    <input type="password" [(ngModel)]="password" name="password" required />
-    <button type="submit">Login</button>
-  </form>
-
- <!--<div *ngIf="error" class="error">{{ error }}</div>-->
+<div class="row">
+  <div class="col-md-4 offset-md-4 col-sm-6 offset-sm-3">
+    <div class="login-container">
+      <h2>Login</h2>
+      <form (ngSubmit)="login()">
+         <div class="form-group">
+          <label for="email">Username : </label>
+          <input [(ngModel)]="username" name="username" required class="form-control" />
+         </div>
+          <div class="form-group">
+          <label for="password">Password : </label>
+          <input type="password" [(ngModel)]="password" class="form-control" name="password" required placeholder="********" />
+          </div>
+         <div class="text-center">
+          <input type="submit" class="btn btn-my" value="Login">
+        </div>
+      </form>
+      <div *ngIf="error" class="error">{{ error }}</div>
+    </div>
+  </div>
 </div>

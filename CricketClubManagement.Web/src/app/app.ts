@@ -14,6 +14,6 @@ import { PlayerList } from './pages/player/player-list/player-list';
   imports: [RouterOutlet]
 })
 export class App {
-  isLoggedIn = true;
+  //isLoggedIn = true;
   protected readonly title = signal('CricketClubManagement.Web');
 }
