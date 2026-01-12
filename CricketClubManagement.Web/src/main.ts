@@ -1,7 +1,6 @@
 import { bootstrapApplication } from '@angular/platform-browser';
 import { provideHttpClient } from '@angular/common/http';
 import { provideRouter } from '@angular/router';
-
 import { App } from './app/app';
 import { routes } from './app/app-routing-module';  
 
@@ -10,4 +9,4 @@ bootstrapApplication(App, {
     provideHttpClient(),
     provideRouter(routes)
   ]
-}).catch((err: unknown) => console.error(err));
+});

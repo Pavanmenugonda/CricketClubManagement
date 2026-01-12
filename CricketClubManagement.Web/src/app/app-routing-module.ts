@@ -1,15 +1,10 @@
-import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
-import { Login } from './login/login'; 
+import { Routes } from '@angular/router';
+import { Login } from './pages/login/login';
+import { PlayerList } from './pages/player/player-list/player-list';
 
 export const routes: Routes = [
-  { path: 'login', component: Login }, 
-  { path: 'players', loadChildren: () => import('./pages/player/player-module').then(m => m.PlayerModule) },
-  { path: '', redirectTo: 'players', pathMatch: 'full' }
+  { path: 'login', component: Login },          // Login page
+  { path: 'players', component: PlayerList },   // Player list page
+  { path: '', redirectTo: 'players', pathMatch: 'full' }, // Default route
+  { path: '**', redirectTo: 'players' }         // Fallback route
 ];
-
-@NgModule({
-  imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
-})
-export class AppRoutingModule { }

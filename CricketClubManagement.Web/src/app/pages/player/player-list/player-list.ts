@@ -1,11 +1,15 @@
+// player-list.ts
 import { Component, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { PlayerService } from '../../../services/player';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-player-list',
-  standalone: false,
+  standalone: true,
+  imports: [CommonModule, RouterModule],
   templateUrl: './player-list.html',
-  styleUrl: './player-list.css',
+  styleUrls: ['./player-list.css']
 })
 export class PlayerList implements OnInit {
   players: any[] = [];
@@ -27,4 +31,3 @@ export class PlayerList implements OnInit {
     });
   }
 }
-

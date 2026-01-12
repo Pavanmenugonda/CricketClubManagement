@@ -1,13 +1,7 @@
-import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
 import { PlayerList } from './player-list/player-list';
+import { Routes } from '@angular/router';
 
-const routes: Routes = [
-  {path: '', component:PlayerList}
+export const routes: Routes = [
+  { path: 'players', component: PlayerList },
+  { path: '', redirectTo: 'players', pathMatch: 'full' }
 ];
-
-@NgModule({
-  imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule]
-})
-export class PlayerRoutingModule { }
