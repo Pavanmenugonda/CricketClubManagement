@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
+import { AuthService } from '../Auth/auth.service';
 
 @Component({
   selector: 'app-home',
@@ -13,5 +14,11 @@ import { RouterModule } from '@angular/router';
 export class Home {
   clubName: string = 'Cricket Club Management - City Cricket Club';
   userName: string = 'John Doe - Admin';
+
+  constructor(private auth: AuthService) { }
+
+  logout() {
+    this.auth.logout();
+  }
 
 }

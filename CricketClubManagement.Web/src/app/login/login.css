@@ -1,16 +1,106 @@
-.text-right.forget-pass a {
-  font-size: 12px;
-  color: #37c957;
-  text-decoration: none;
+* {
+  box-sizing: border-box;
+  font-family: Arial, sans-serif;
 }
 
-.sign-up {
-  color: #fff;
+.login-page {
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* Background image */
+  background-image: url("https://resources.ecb.co.uk/photo-resources/ecb/photo/2016/08/23/2c186456-a7dd-4896-aa59-41738cd7b4b3/Cricket_outfield.jpg?width=1766&height=608");
+/*  background-image: url('/assets/images/LoginPageBackGroundImage.jpg');*/
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  position: relative;
 }
 
-.sign-up a {
-    color: #d39e00;
-    font-weight: 600;
-    text-decoration: none;
+/* Dark overlay to improve contrast */
+.login-page::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background: rgba(0, 0, 0, 0.45); /* adjust opacity as needed */
 }
 
+.login-card {
+  z-index: 1; /* above overlay */
+  width: 360px;
+  background: #ffffff;
+  padding: 32px;
+  border-radius: 8px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+}
+
+.title {
+  margin: 0;
+  font-size: 22px;
+  text-align: center;
+  color: #0f172a;
+}
+
+.subtitle {
+  margin: 8px 0 24px;
+  text-align: center;
+  color: #64748b;
+  font-size: 14px;
+}
+
+.field {
+  margin-bottom: 16px;
+}
+
+  .field label {
+    display: block;
+    margin-bottom: 6px;
+    font-size: 13px;
+    color: #334155;
+  }
+
+  .field input {
+    width: 100%;
+    padding: 10px 12px;
+    border-radius: 4px;
+    border: 1px solid #cbd5e1;
+    font-size: 14px;
+  }
+
+    .field input:focus {
+      outline: none;
+      border-color: #2563eb;
+    }
+
+.login-btn {
+  width: 100%;
+  padding: 12px;
+  margin-top: 8px;
+  border: none;
+  border-radius: 4px;
+  background: #2563eb;
+  color: #ffffff;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+  .login-btn:hover {
+    background: #1d4ed8;
+  }
+
+.error {
+  margin-top: 16px;
+  padding: 10px;
+  background: #fee2e2;
+  color: #991b1b;
+  border-radius: 4px;
+  font-size: 13px;
+  text-align: center;
+}
+
+.subtitle{
+    color:cornflowerblue;
+}

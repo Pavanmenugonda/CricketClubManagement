@@ -4,27 +4,35 @@ import { RouterModule } from '@angular/router';
 import { Router } from "@angular/router"; 
 import { PlayerService } from '../../services/player';
 import { Player } from '../../services/player.model';
+import { FormsModule } from '@angular/forms';
 
 
 @Component({
   selector: 'app-player-list',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, FormsModule],
   templateUrl: './player-list.html',
   styleUrls: ['./player-list.css']
 })
-export class PlayerList implements OnInit {
+export class PlayerList  {
 
   players: Player[] = [];
+  filteredPlayers: Player[] = [];
+  searchText = '';
   loading = true;
   error = '';
 
-  constructor(private playerService: PlayerService) { }
+  selectedPlayer: Player | null = null;
 
-  ngOnInit(): void {
+  constructor(private playerService: PlayerService) {
+    this.loadPlayers();
+}
+
+  loadPlayers(): void {
     this.playerService.getPlayers().subscribe({
-      next: (res) => {
-        this.players = res.items;   // IMPORTANT
+      next: (data) => {
+        this.players = data.items || [];
+        this.filteredPlayers = [...this.players];
         this.loading = false;
       },
       error: () => {
@@ -33,5 +41,18 @@ export class PlayerList implements OnInit {
       }
     });
   }
-}
+  filterPlayers(): void {
+    const text = this.searchText.toLowerCase();
+    this.filteredPlayers = this.players.filter(p =>
+      p.playerName.toLowerCase().includes(text)
+    );
+  }
 
+  selectPlayer(player: Player): void {
+    this.selectedPlayer = player;
+  }
+
+  clearSelection(): void {
+    this.selectedPlayer = null;
+  }
+}

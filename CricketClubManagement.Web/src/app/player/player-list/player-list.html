@@ -1,14 +1,28 @@
 <h2>Players</h2>
 
-<div *ngIf="loading">Loading...</div>
-<div *ngIf="error">{{ error }}</div>
+<div class="search-container">
+  <input type="text" [(ngModel)]="searchText" (input)="filterPlayers()" placeholder="Search players..." />
+</div>
 
-<ul *ngIf="!loading && players.length">
-  <li *ngFor="let player of players">
-    {{ player.playerName }} (Age: {{ player.playerAge }})
-  </li>
-</ul>
+<div *ngIf="loading" class="loading">Loading...</div>
+<div *ngIf="error" class="error">{{ error }}</div>
 
-<div *ngIf="!loading && !players.length">
+<div class="player-list-container" *ngIf="!loading && filteredPlayers.length">
+  <ul class="player-list">
+    <li *ngFor="let player of filteredPlayers" (click)="selectPlayer(player)">
+      {{ player.playerName }}
+    </li>
+  </ul>
+
+  <div class="player-details" *ngIf="selectedPlayer">
+    <h3>{{ selectedPlayer.playerName }}</h3>
+    <p>Age: {{ selectedPlayer.playerAge }}</p>
+    <p>Role ID: {{ selectedPlayer.roleId }}</p>
+    <p *ngIf="selectedPlayer.playerContact">Contact: {{ selectedPlayer.playerContact }}</p>
+    <button (click)="clearSelection()">Close</button>
+  </div>
+</div>
+
+<div *ngIf="!loading && !filteredPlayers.length" class="no-data">
   No players found.
 </div>
