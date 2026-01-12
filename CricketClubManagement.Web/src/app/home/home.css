@@ -1,0 +1,99 @@
+* {
+  box-sizing: border-box;
+  font-family: Arial, sans-serif;
+}
+
+.layout {
+  display: flex;
+  height: 100vh;
+  background: #f4f6f8;
+}
+
+/* Sidebar */
+.sidebar {
+  width: 220px;
+  background: #1e293b;
+  color: #fff;
+  padding: 20px;
+}
+
+.logo {
+  margin-bottom: 30px;
+  font-size: 22px;
+  text-align: center;
+}
+
+.sidebar nav a {
+  display: block;
+  color: #cbd5e1;
+  padding: 10px;
+  text-decoration: none;
+  border-radius: 4px;
+  margin-bottom: 6px;
+}
+
+  .sidebar nav a:hover,
+  .sidebar nav a.active {
+    background: #334155;
+    color: #fff;
+  }
+
+/* Main */
+.main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Top bar */
+.topbar {
+  height: 60px;
+  background: #fff;
+  border-bottom: 1px solid #ddd;
+  padding: 0 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+  .topbar .title {
+    font-size: 18px;
+    font-weight: bold;
+  }
+
+.profile button {
+  margin-left: 10px;
+  padding: 6px 10px;
+  border: none;
+  background: #1e293b;
+  color: #fff;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+/* Dashboard */
+.dashboard {
+  padding: 20px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 20px;
+}
+
+.card {
+  background: #fff;
+  padding: 20px;
+  border-radius: 6px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+  .card h3 {
+    margin-top: 0;
+  }
+
+  .card a {
+    display: inline-block;
+    margin-top: 10px;
+    text-decoration: none;
+    color: #2563eb;
+    font-weight: bold;
+  }

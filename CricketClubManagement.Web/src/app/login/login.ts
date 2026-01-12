@@ -18,7 +18,7 @@ export class Login {
 
   login() {
     if (this.username === 'admin' && this.password === 'admin') {
-      this.router.navigate(['/players']);
+      this.router.navigate(['/home']);
     } else {
       this.error = 'Invalid username or password';
     }

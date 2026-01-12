@@ -1,0 +1,73 @@
+<div class="layout">
+
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <h2 class="logo">CCM</h2>
+
+    <nav>
+      <a routerLink="/home" class="active">Home</a>
+      <a routerLink="/players">Players</a>
+      <a routerLink="/teams">Teams</a>
+      <a routerLink="/matches">Matches</a>
+      <a routerLink="/seasons">Seasons</a>
+      <a routerLink="/entities">Entities</a>
+      <a routerLink="/settings">Settings</a>
+    </nav>
+  </aside>
+
+  <!-- Main -->
+  <div class="main">
+
+    <!-- Top Bar -->
+    <header class="topbar">
+      <div class="title">{{ clubName }}</div>
+      <div class="profile">
+        <span>{{ userName }}</span>
+        <button>Profile</button>
+        <button>Logout</button>
+      </div>
+    </header>
+
+    <!-- Dashboard Content -->
+    <section class="dashboard">
+
+      <div class="card">
+        <h3>Players</h3>
+        <p>Manage player profiles, roles, and availability.</p>
+        <a routerLink="/players">View Players</a>
+      </div>
+
+      <div class="card">
+        <h3>Teams</h3>
+        <p>Create and manage teams across seasons.</p>
+        <a routerLink="/teams">View Teams</a>
+      </div>
+
+      <div class="card">
+        <h3>Matches</h3>
+        <p>Fixtures, results, and match statistics.</p>
+        <a routerLink="/matches">View Matches</a>
+      </div>
+
+      <div class="card">
+        <h3>Seasons</h3>
+        <p>Season setup, scheduling, and archiving.</p>
+        <a routerLink="/seasons">View Seasons</a>
+      </div>
+
+      <div class="card">
+        <h3>Entities</h3>
+        <p>Clubs, grounds, officials, and sponsors.</p>
+        <a routerLink="/entities">View Entities</a>
+      </div>
+
+      <div class="card">
+        <h3>Settings</h3>
+        <p>System configuration and permissions.</p>
+        <a routerLink="/settings">Open Settings</a>
+      </div>
+
+    </section>
+  </div>
+
+</div>

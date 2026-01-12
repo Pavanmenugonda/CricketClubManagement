@@ -1,13 +1,14 @@
 /* Add application styles & imports to this file! */
 @import url('https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css');
-/*@import url('../node_modules/simple-keyboard/build/css/index.css');
-*/
+    /* @import url('../node_modules/simple-keyboard/build/css/index.css'); */
+
+
 .auth-card {
-  background: #c31432; /* fallback for old browsers */
-  background: -webkit-linear-gradient( to right, #240b36, #c31432 ); /* Chrome 10-25, Safari 5.1-6 */
-  background: linear-gradient( to right, #240b36, #c31432 ); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+  background: #0f59c9; /* fallback for old browsers */
+  background: -webkit-linear-gradient( to right, #240b36, #5b9599 ); /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient( to right, #b47ba6, #8d9750 ); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
   border-radius: 5px;
-  box-shadow: 0px 0px 30px #f7f7f7;
+  box-shadow: 0px 10px 30px #a08e8e;
 }
 
 label {
@@ -25,13 +26,13 @@ label {
 }
 
 .auth {
-  margin-top: 35px;
+  margin-top: 150px;
   border: none;
   border-radius: 6px;
 }
 
 .btn-my {
-  background-color: #d39e00;
+  background-color: #219ec4;
   border-color: #d39e00;
   color: #fff;
 }

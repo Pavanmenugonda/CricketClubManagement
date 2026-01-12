@@ -3,8 +3,8 @@ import { RouterOutlet } from '@angular/router';
 import { RouterModule } from '@angular/router'; 
 import { provideRouter } from '@angular/router';
 import { routes } from './app-routing-module';
-import { Login } from './pages/login/login';
-import { PlayerList } from './pages/player/player-list/player-list';
+import { Login } from './login/login';
+import { Home } from './home/home';
 
 @Component({
   selector: 'app-root',

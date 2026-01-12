@@ -1,6 +1,6 @@
 .text-right.forget-pass a {
   font-size: 12px;
-  color: #d39e00;
+  color: #37c957;
   text-decoration: none;
 }
 
@@ -8,9 +8,9 @@
   color: #fff;
 }
 
-  .sign-up a {
+.sign-up a {
     color: #d39e00;
     font-weight: 600;
     text-decoration: none;
-  }
+}
 

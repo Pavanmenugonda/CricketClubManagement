@@ -8,6 +8,7 @@
     <BuildOutputFolder>$(MSBuildProjectDirectory)\dist\CricketClubManagement.Web\browser\</BuildOutputFolder>
   </PropertyGroup>
   <ItemGroup>
+    <Folder Include="src\app\pages\" />
     <Folder Include="src\environments\" />
   </ItemGroup>
 </Project>
