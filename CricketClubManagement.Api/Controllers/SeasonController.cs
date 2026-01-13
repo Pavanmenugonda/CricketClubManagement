@@ -9,11 +9,11 @@ namespace CricketClubManagement.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class SeasonController : ControllerBase
+    public class SeasonsController : ControllerBase
     {
         private readonly ISeasonService _service;
 
-        public SeasonController(ISeasonService service)
+        public SeasonsController(ISeasonService service)
         {
             _service = service;
         }

@@ -27,6 +27,7 @@ namespace CricketClubManagement.Infrastructure.Services
                     MatchId = m.MatchId,
                     MatchDate = m.MatchDate,
                     MatchName = m.MatchName,
+                    SeasonId = m.SeasonId
                 })
                 .ToListAsync();
         }

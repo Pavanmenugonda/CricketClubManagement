@@ -10,11 +10,11 @@ namespace CricketClubManagement.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class MatchController : ControllerBase
+    public class MatchesController : ControllerBase
     {
         private readonly IMatchService _service;
 
-        public MatchController(IMatchService service)
+        public MatchesController(IMatchService service)
         {
             _service = service;
         }

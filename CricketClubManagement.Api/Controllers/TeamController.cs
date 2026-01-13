@@ -7,13 +7,13 @@ using CricketClubManagement.Application.Interfaces;
 
 namespace CricketClubManagement.Api.Controllers
 {
-    [Route("api/[controller]")]
     [ApiController]
-    public class TeamController : ControllerBase
+    [Route("api/[controller]")]
+    public class TeamsController : ControllerBase
     {
         private readonly ITeamService _service;
 
-        public TeamController(ITeamService service)
+        public TeamsController(ITeamService service)
         {
             _service = service;
         }
@@ -21,7 +21,8 @@ namespace CricketClubManagement.Api.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
-            return Ok(await _service.GetAllAsync());
+            var teams = await _service.GetAllAsync();
+            return Ok(teams);
         }
 
         [HttpGet("{id:int}")]

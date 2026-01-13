@@ -1,9 +1,10 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { environment } from '../../environments/environment';
 import { Player } from './player.model';
 import { BehaviorSubject } from 'rxjs'; 
+import { environment } from '../../../environments/environment';
+
 
 @Injectable({ providedIn: 'root' })
 

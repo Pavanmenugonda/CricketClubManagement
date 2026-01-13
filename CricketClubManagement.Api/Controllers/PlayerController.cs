@@ -11,8 +11,8 @@ namespace CricketClubManagement.Api.Controllers
 {
 
   [ApiController]
-  [Route("api/players")]
-  public class PlayersController : ControllerBase
+  [Route("api/[controller]")]
+    public class PlayersController : ControllerBase
   {
     private readonly IPlayerService _service;
 
@@ -21,18 +21,18 @@ namespace CricketClubManagement.Api.Controllers
         _service = service;
     }
 
-        [HttpGet]
+   [HttpGet]
         public async Task<IActionResult> GetPlayers(
         [FromQuery] int page = 1,
         [FromQuery] int pageSize = 10,
         [FromQuery] int? roleId = null)
         {
             var result = await _service.GetAllAsync(page, pageSize, roleId);
-            return Ok(result);
-        }
+           return Ok(result);
+   }
 
 
-        [HttpGet("{id:int}")]
+  [HttpGet("{id:int}")]
     public async Task<IActionResult> GetById(int id)
     {
         var player = await _service.GetByIdAsync(id);

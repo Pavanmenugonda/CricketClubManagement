@@ -18,7 +18,7 @@ export class AuthService {
   }
 
   logout() {
-    this._isLoggedIn.set(false);   // END SESSION
-    this.router.navigate(['/login']); // FORCE EXIT
+   // this._isLoggedIn.set(false);   // END SESSION
+   // this.router.navigate(['/login']); // FORCE EXIT
   }
 }
