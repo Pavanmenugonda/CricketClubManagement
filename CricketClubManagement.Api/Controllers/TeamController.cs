@@ -7,13 +7,13 @@ using CricketClubManagement.Application.Interfaces;
 
 namespace CricketClubManagement.Api.Controllers
 {
-    [Route("api/[controller]")]
     [ApiController]
-    public class TeamController : ControllerBase
+    [Route("api/[controller]")]
+    public class TeamsController : ControllerBase
     {
         private readonly ITeamService _service;
 
-        public TeamController(ITeamService service)
+        public TeamsController(ITeamService service)
         {
             _service = service;
         }

@@ -31,7 +31,7 @@ export class TeamList implements OnInit {
 
     this.teamService.getTeams().subscribe({
       next: (data: Team[]) => {
-        console.log(data);
+        console.log('Teams received:', data);
         this.teams = data;
         this.filteredTeams = [...data];
         this.loading = false;
@@ -39,15 +39,17 @@ export class TeamList implements OnInit {
       error: (err) => {
         console.error(err);
         this.error = 'Failed to load Teams';
+        console.error('Failed to load Teams:', err);
         this.loading = false;
       }
     });
   }
 
+
   filterTeams(): void {
-    const text = this.searchText.toLowerCase();
+    const text = (this.searchText || '').toLowerCase();
     this.filteredTeams = this.teams.filter(t =>
-      t.teamName.toLowerCase().includes(text)
+      (t.teamName || '').toLowerCase().includes(text)
     );
   }
 

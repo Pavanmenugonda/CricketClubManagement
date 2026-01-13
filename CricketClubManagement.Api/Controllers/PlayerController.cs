@@ -11,8 +11,8 @@ namespace CricketClubManagement.Api.Controllers
 {
 
   [ApiController]
-  [Route("api/players")]
-  public class PlayersController : ControllerBase
+  [Route("api/[controller]")]
+    public class PlayersController : ControllerBase
   {
     private readonly IPlayerService _service;
 
