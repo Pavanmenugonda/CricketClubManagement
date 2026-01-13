@@ -21,7 +21,8 @@ namespace CricketClubManagement.Api.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
-            return Ok(await _service.GetAllAsync());
+            var teams = await _service.GetAllAsync();
+            return Ok(teams);
         }
 
         [HttpGet("{id:int}")]

@@ -1,0 +1,29 @@
+<h2>Teams</h2>
+
+<input type="text"
+       placeholder="Search teams..."
+       [(ngModel)]="searchText"
+       (input)="filterTeams()"
+       class="search-box" />
+
+<div *ngIf="loading" class="info">Loading teams...</div>
+<div *ngIf="error" class="error">{{ error }}</div>
+
+<ul class="team-list" *ngIf="!loading && filteredTeams.length">
+  <li *ngFor="let team of filteredTeams"
+      (click)="selectTeam(team)"
+      [class.active]="team === selectedTeam">
+    {{ team.teamName }}
+  </li>
+</ul>
+
+<div *ngIf="!loading && !filteredTeams.length" class="info">
+  No teams found.
+</div>
+
+<div *ngIf="selectedTeam" class="team-preview">
+  <h3>{{ selectedTeam.teamName }}</h3>
+  <p><strong>ID:</strong> {{ selectedTeam.teamId }}</p>
+
+  <button (click)="clearSelection()">Close</button>
+</div>

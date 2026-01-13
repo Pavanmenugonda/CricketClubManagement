@@ -2,8 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { Router } from "@angular/router"; 
-import { PlayerService } from '../../services/player';
-import { Player } from '../../services/player.model';
+import { PlayerService } from '../../services/players/player';
+import { Player } from '../../services/players/player.model';
 import { FormsModule } from '@angular/forms';
 
 
