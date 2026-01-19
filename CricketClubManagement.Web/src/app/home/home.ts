@@ -12,7 +12,7 @@ import { AuthService } from '../Auth/auth.service';
   styleUrl: './home.css',
 })
 export class Home {
-  clubName: string = 'Cricket Club Management - City Cricket Club';
+  clubName: string = 'NT Cricket Club';
   userName: string = 'John Doe - Admin';
 
   constructor(private auth: AuthService) { }
