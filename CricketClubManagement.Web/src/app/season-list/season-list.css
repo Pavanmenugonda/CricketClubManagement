@@ -1,0 +1,106 @@
+.season-page {
+  padding: 24px;
+}
+
+.season-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+  .season-header h2 {
+    margin: 0;
+  }
+
+.search-box {
+  width: 260px;
+  padding: 8px 12px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+}
+
+.state {
+  padding: 16px;
+  margin-top: 20px;
+  border-radius: 6px;
+}
+
+  .state.info {
+    background: #f5f7fa;
+  }
+
+  .state.error {
+    background: #ffe5e5;
+    color: #b00020;
+  }
+
+.season-layout {
+  display: grid;
+  grid-template-columns: 320px 1fr;
+  gap: 24px;
+}
+
+.season-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  border: 1px solid #e1e4e8;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.season-item {
+  padding: 14px 16px;
+  cursor: pointer;
+  border-bottom: 1px solid #eee;
+}
+
+  .season-item:last-child {
+    border-bottom: none;
+  }
+
+  .season-item:hover {
+    background: #f5f7fa;
+  }
+
+  .season-item.active {
+    background: #e8f0fe;
+  }
+
+.season-name {
+  font-weight: 600;
+}
+
+.season-dates {
+  font-size: 13px;
+  color: #666;
+  margin-top: 4px;
+}
+
+.season-preview {
+  border: 1px solid #e1e4e8;
+  border-radius: 8px;
+  padding: 20px;
+  background: #fff;
+}
+
+  .season-preview h3 {
+    margin-top: 0;
+    margin-bottom: 16px;
+  }
+
+.detail {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.btn-secondary {
+  margin-top: 12px;
+  padding: 8px 14px;
+  border: none;
+  background: #ddd;
+  border-radius: 6px;
+  cursor: pointer;
+}

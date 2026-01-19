@@ -1,0 +1,65 @@
+<section class="season-page">
+  <header class="season-header">
+    <h2>Seasons</h2>
+
+    <input type="text"
+           placeholder="Search seasons"
+           [(ngModel)]="searchText"
+           (input)="filterSeasons()"
+           class="search-box" />
+  </header>
+
+  @if (loading) {
+  <div class="state info">Loading seasons...</div>
+  }
+
+  @if (error) {
+  <div class="state error">{{ error }}</div>
+  }
+
+  @if (!loading && filteredSeasons.length) {
+  <div class="season-layout">
+    <ul class="season-list">
+      @for (season of filteredSeasons; track season.seasonId) {
+      <li class="season-item"
+          (click)="selectSeason(season)"
+          [class.active]="season === selectedSeason">
+        <div class="season-name">{{ season.seasonTitle }}</div>
+        <div class="season-dates">
+          {{ season.seasonStartDate | date:'MMM yyyy' }}
+          –
+          {{ season.seasonEndDate | date:'MMM yyyy' }}
+        </div>
+      </li>
+      }
+    </ul>
+
+    @if (selectedSeason) {
+    <aside class="season-preview">
+      <h3>{{ selectedSeason.seasonTitle }}</h3>
+
+      <div class="detail">
+        <span>Season ID</span>
+        <strong>{{ selectedSeason.seasonId }}</strong>
+      </div>
+
+      <div class="detail">
+        <span>Start</span>
+        <strong>{{ selectedSeason.seasonStartDate | date:'longDate' }}</strong>
+      </div>
+
+      <div class="detail">
+        <span>End</span>
+        <strong>{{ selectedSeason.seasonEndDate | date:'longDate' }}</strong>
+      </div>
+
+      <button class="btn-secondary" (click)="clearSelection()">Close</button>
+    </aside>
+    }
+  </div>
+  }
+
+  @if (!loading && !filteredSeasons.length) {
+  <div class="state info">No seasons found.</div>
+  }
+</section>

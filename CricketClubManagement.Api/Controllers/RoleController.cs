@@ -12,11 +12,11 @@ namespace CricketClubManagement.Api.Controllers
 
     [Route("api/[controller]")]
     [ApiController]
-    public class RoleController : ControllerBase
+    public class RolesController : ControllerBase
     {
         private readonly IRoleService _service;
 
-        public RoleController(IRoleService service)
+        public RolesController(IRoleService service)
         {
             _service = service;
         }

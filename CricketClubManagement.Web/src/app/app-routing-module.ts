@@ -5,6 +5,7 @@ import { Home } from './home/home';
 import { PlayerList } from './player/player-list/player-list';
 import { TeamList } from './teams/teams-list';
 import { MatchesList } from './matches-list/matches-list';
+import { SeasonList } from './season-list/season-list';
 
 export const routes: Routes = [
 
@@ -34,6 +35,13 @@ export const routes: Routes = [
     component: MatchesList,
     canActivate: [authGuard],
     title: 'matches-list'
+  },
+  {
+    path: 'seasons',
+    component: SeasonList,
+    canActivate: [authGuard],
+    title: 'seasons-list'
+
   },
 
   {
