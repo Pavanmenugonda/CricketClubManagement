@@ -1,28 +1,60 @@
-<h2>Players</h2>
+<section class="entity-page">
 
-<div class="search-container">
-  <input type="text" [(ngModel)]="searchText" (input)="filterPlayers()" placeholder="Search players..." />
-</div>
+  <header class="page-header">
+    <h1>Players</h1>
+    <input type="text"
+           class="search-input"
+           placeholder="Search players..."
+           [(ngModel)]="searchText"
+           (input)="filterPlayers()" />
+  </header>
 
-<div *ngIf="loading" class="loading">Loading...</div>
-<div *ngIf="error" class="error">{{ error }}</div>
+  @if (loading) {
+  <div class="status loading">Loading players…</div>
+  }
 
-<div class="player-list-container" *ngIf="!loading && filteredPlayers.length">
-  <ul class="player-list">
-    <li *ngFor="let player of filteredPlayers" (click)="selectPlayer(player)">
-      {{ player.playerName }}
-    </li>
-  </ul>
+  @if (error) {
+  <div class="status error">{{ error }}</div>
+  }
 
-  <div class="player-details" *ngIf="selectedPlayer">
-    <h3>{{ selectedPlayer.playerName }}</h3>
-    <p>Age: {{ selectedPlayer.playerAge }}</p>
-    <p>Role ID: {{ selectedPlayer.roleId }}</p>
-    <p *ngIf="selectedPlayer.playerContact">Contact: {{ selectedPlayer.playerContact }}</p>
-    <button (click)="clearSelection()">Close</button>
+  @if (!loading && filteredPlayers.length) {
+  <div class="entity-layout">
+
+    <ul class="entity-list">
+      @for (player of filteredPlayers; track player.playerId) {
+      <li class="entity-item"
+          (click)="selectPlayer(player)"
+          [class.active]="selectedPlayer?.playerId === player.playerId">
+        {{ player.playerName }}
+      </li>
+      }
+    </ul>
+
+    @if (selectedPlayer) {
+    <aside class="details-panel">
+      <div class="details-header">
+        <h2>{{ selectedPlayer.playerName }}</h2>
+        <button class="btn-clear" (click)="clearSelection()">×</button>
+      </div>
+
+      <div class="details-body">
+        <p><strong>Age:</strong> {{ selectedPlayer.playerAge }}</p>
+        <p><strong>Role ID:</strong> {{ selectedPlayer.roleId }}</p>
+        @if (selectedPlayer.playerContact) {
+        <p><strong>Contact:</strong> {{ selectedPlayer.playerContact }}</p>
+        }
+      </div>
+    </aside>
+    }
+
   </div>
-</div>
+  }
+  <button class="btn btn-success" (click)="addPlayer()">Add a Player</button>
 
-<div *ngIf="!loading && !filteredPlayers.length" class="no-data">
-  No players found.
-</div>
+  @if (!loading && !filteredPlayers.length) {
+  <div class="status empty">No players found.</div>
+  }
+
+  <button class="btn-back" (click)="goBack()">← Back</button>
+  <button class="btn btn-primary" (click)="goHome()">← Got to Home</button>
+</section>

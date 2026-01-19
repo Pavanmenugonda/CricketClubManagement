@@ -1,66 +1,54 @@
-
-<section class="matches-page">
+<section class="entity-page">
 
   <header class="page-header">
     <h1>Matches</h1>
-    <div class="actions">
-      <input type="text"
-             class="search-input"
-             [(ngModel)]="searchText"
-             (input)="filterMatches()"
-             placeholder="Search matches..."
-             aria-label="Search matches" />
-    </div>
+    <input type="text"
+           class="search-input"
+           placeholder="Search matches..."
+           [(ngModel)]="searchText"
+           (input)="filterMatches()" />
   </header>
 
   @if (loading) {
-  <div class="status loading" role="status" aria-live="polite">
-    <span class="spinner" aria-hidden="true"></span>
-    <span>Loading matches…</span>
-  </div>
-  } @else {
+  <div class="status loading">Loading matches…</div>
+  }
+
   @if (error) {
-  <div class="status error" role="alert">
-    {{ error }}
-  </div>
-  } @else {
-  @if (filteredMatches.length === 0) {
-  <div class="status empty" role="status" aria-live="polite">
-    No matches found.
-  </div>
-  } @else {
-  <ul class="matches-list" aria-label="Matches">
-    @for (match of filteredMatches; track match.matchId) {
-    <li class="match-item"
-        (click)="selectMatch(match)"
-        [class.selected]="selectedMatch?.matchId === match.matchId"
-        tabindex="0"
-        (keydown.enter)="selectMatch(match)">
-      <div class="match-title">{{ match.matchName }}</div>
-      <div class="match-date">
-        {{ match.matchDate | date:'mediumDate' }}
+  <div class="status error">{{ error }}</div>
+  }
+
+  @if (!loading && filteredMatches.length) {
+  <div class="entity-layout">
+
+    <ul class="entity-list">
+      @for (match of filteredMatches; track match.matchId) {
+      <li class="entity-item"
+          (click)="selectMatch(match)"
+          [class.active]="selectedMatch?.matchId === match.matchId">
+        <div>{{ match.matchName }}</div>
+        <small>{{ match.matchDate | date:'mediumDate' }}</small>
+      </li>
+      }
+    </ul>
+
+    @if (selectedMatch) {
+    <aside class="details-panel">
+      <div class="details-header">
+        <h2>{{ selectedMatch.matchName }}</h2>
+        <button class="btn-clear" (click)="clearSelection()">×</button>
       </div>
 
-    </li>
+      <div class="details-body">
+        <!--<p><strong>ID:</strong> {{ selectedMatch.matchId }}</p>-->
+        <p><strong>Match Date:</strong> {{ selectedMatch.matchDate | date:'fullDate' }}</p>
+      </div>
+    </aside>
     }
-  </ul>
-  }
-  }
+
+  </div>
   }
 
-  @if (selectedMatch) {
-  <aside class="details-panel" aria-label="Selected match details">
-    <div class="details-header">
-      <h2>{{ selectedMatch!.matchName }}</h2>
-      <button class="btn btn-clear" (click)="clearSelection()" aria-label="Clear selection">
-        ×
-      </button>
-    </div>
-    <div class="details-body">
-      <p><strong>Match ID:</strong> {{ selectedMatch!.matchId }}</p>
-      <p><strong>Date:</strong> {{ selectedMatch!.matchDate | date:'fullDate' }}</p>
-    </div>
-  </aside>
+  @if (!loading && !filteredMatches.length) {
+  <div class="status empty">No matches found.</div>
   }
-
 </section>

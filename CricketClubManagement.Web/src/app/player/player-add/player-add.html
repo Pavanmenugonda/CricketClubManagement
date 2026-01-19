@@ -1,0 +1,50 @@
+<section class="player-add-page">
+  <div class="card">
+    <h2>Add Player</h2>
+
+    <form (ngSubmit)="save()" #playerForm="ngForm">
+      <div class="form-group">
+        <label>Player Name</label>
+        <input type="text"
+               class="form-control"
+               name="playerName"
+               [(ngModel)]="player.playerName"
+               required />
+      </div>
+
+      <div class="form-group">
+        <label>Age</label>
+        <input type="number"
+               class="form-control"
+               name="playerAge"
+               [(ngModel)]="player.playerAge"
+               required
+               min="5" />
+      </div>
+
+      <div class="form-group">
+        <label>Contact Number</label>
+        <input type="text"
+               class="form-control"
+               name="playerContact"
+               [(ngModel)]="player.playerContact" />
+      </div>
+
+      <div class="actions">
+        <button type="submit"
+                class="btn btn-primary"
+                [disabled]="playerForm.invalid || loading">
+          {{ loading ? 'Saving...' : 'Add Player' }}
+        </button>
+
+        <button type="button"
+                class="btn btn-secondary"
+                (click)="goBack()">
+          Back
+        </button>
+      </div>
+
+      <div class="error" *ngIf="error">{{ error }}</div>
+    </form>
+  </div>
+</section>

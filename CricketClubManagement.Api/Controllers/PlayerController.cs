@@ -10,8 +10,8 @@ using System.ComponentModel.DataAnnotations;
 namespace CricketClubManagement.Api.Controllers
 {
 
-  [ApiController]
-  [Route("api/[controller]")]
+ [ApiController]
+ [Route("api/[controller]")]
     public class PlayersController : ControllerBase
   {
     private readonly IPlayerService _service;
@@ -21,7 +21,7 @@ namespace CricketClubManagement.Api.Controllers
         _service = service;
     }
 
-   [HttpGet]
+[HttpGet]
         public async Task<IActionResult> GetPlayers(
         [FromQuery] int page = 1,
         [FromQuery] int pageSize = 10,
@@ -32,7 +32,7 @@ namespace CricketClubManagement.Api.Controllers
    }
 
 
-  [HttpGet("{id:int}")]
+[HttpGet("{id:int}")]
     public async Task<IActionResult> GetById(int id)
     {
         var player = await _service.GetByIdAsync(id);
@@ -40,21 +40,21 @@ namespace CricketClubManagement.Api.Controllers
         if (player == null) return NotFound();
          return Ok(ApiResponse<PlayerDto>.Ok(player));
         }
-      [HttpPost]
+[HttpPost]
         public async Task<IActionResult> Create([FromBody] CreatePlayerDto dto)
         {
             var id = await _service.CreateAsync(dto);
             return CreatedAtAction(nameof(GetById), new { id }, ApiResponse<int>.Ok(id));
         }
 
-     [HttpPut("{id:int}")]
+[HttpPut("{id:int}")]
     public async Task<IActionResult> Update(int id, UpdatePlayerDto dto)
     {
             await _service.UpdateAsync(id, dto);
             return NoContent();
     }
 
-    [HttpDelete("{id:int}")]
+ [HttpDelete("{id:int}")]
     public async Task<IActionResult> Delete(int id)
     {
         var deleted = await _service.DeleteAsync(id);

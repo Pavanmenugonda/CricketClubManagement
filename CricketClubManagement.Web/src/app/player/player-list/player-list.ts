@@ -5,7 +5,7 @@ import { Router } from "@angular/router";
 import { PlayerService } from '../../services/players/player';
 import { Player } from '../../services/players/player.model';
 import { FormsModule } from '@angular/forms';
-
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-player-list',
@@ -24,7 +24,7 @@ export class PlayerList  {
 
   selectedPlayer: Player | null = null;
 
-  constructor(private playerService: PlayerService) {
+  constructor(private playerService: PlayerService, private _location: Location, private router: Router) {
     this.loadPlayers();
 }
 
@@ -48,11 +48,23 @@ export class PlayerList  {
     );
   }
 
-  selectPlayer(player: Player): void {
-    this.selectedPlayer = player;
+  selectPlayer(player: any) {
+    this.selectedPlayer = { ...player }; // clone to avoid accidental changes
   }
 
   clearSelection(): void {
     this.selectedPlayer = null;
+  }
+
+  goBack(): void {
+    this._location.back();
+  }
+
+  goHome(): void {
+    this.router.navigate(['/teams']);
+  }
+
+  addPlayer(): void {
+    this.router.navigate(['/players/add'])
   }
 }

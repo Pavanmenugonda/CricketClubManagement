@@ -3,7 +3,7 @@ import { RouterOutlet } from '@angular/router';
 import { RouterModule } from '@angular/router'; 
 import { provideRouter } from '@angular/router';
 import { routes } from './app-routing-module';
-import { Login } from './login/login';
+//import { Login } from './login/login';
 import { Home } from './home/home';
 
 @Component({

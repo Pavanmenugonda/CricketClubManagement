@@ -1,29 +1,56 @@
-<h2>Teams</h2>
+<section class="entity-page">
 
-<input type="text"
-       placeholder="Search teams..."
-       [(ngModel)]="searchText"
-       (input)="filterTeams()"
-       class="search-box" />
+  <header class="page-header">
+    <h1>Teams</h1>
+    <input
+      type="text"
+      class="search-input"
+      placeholder="Search teams..."
+      [(ngModel)]="searchText"
+      (input)="filterTeams()" />
+  </header>
 
-<div *ngIf="loading" class="info">Loading teams...</div>
-<div *ngIf="error" class="error">{{ error }}</div>
+  @if (loading) {
+    <div class="status loading">Loading teams…</div>
+  }
 
-<ul class="team-list" *ngIf="!loading && filteredTeams.length">
-  <li *ngFor="let team of filteredTeams"
-      (click)="selectTeam(team)"
-      [class.active]="team === selectedTeam">
-    {{ team.teamName }}
-  </li>
-</ul>
+  @if (error) {
+    <div class="status error">{{ error }}</div>
+  }
 
-<div *ngIf="!loading && !filteredTeams.length" class="info">
-  No teams found.
-</div>
+  @if (!loading && filteredTeams.length) {
+    <div class="entity-layout">
 
-<div *ngIf="selectedTeam" class="team-preview">
-  <h3>{{ selectedTeam.teamName }}</h3>
-  <p><strong>ID:</strong> {{ selectedTeam.teamId }}</p>
+      <ul class="entity-list">
+        @for (team of filteredTeams; track team.teamId) {
+          <li
+            class="entity-item"
+            (click)="selectTeam(team)"
+            [class.active]="selectedTeam?.teamId === team.teamId">
+            {{ team.teamName }}
+          </li>
+        }
+      </ul>
 
-  <button (click)="clearSelection()">Close</button>
-</div>
+      @if (selectedTeam) {
+        <aside class="details-panel">
+          <div class="details-header">
+            <h2>{{ selectedTeam.teamName }}</h2>
+            <button class="btn-clear" (click)="clearSelection()">×</button>
+          </div>
+
+          <div class="details-body">
+            <!--<p><strong>Team ID:</strong> {{ selectedTeam.teamId }}</p>-->
+            <p><strong>Team name:</strong> {{ selectedTeam.teamName }}</p>
+          </div>
+        </aside>
+      }
+
+    </div>
+  }
+
+  @if (!loading && !filteredTeams.length) {
+    <div class="status empty">No teams found.</div>
+  }
+
+</section>

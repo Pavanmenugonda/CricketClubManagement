@@ -21,4 +21,12 @@ export class PlayerService {
 
     return this.http.get<any>(this.baseUrl, { params });
   }
+
+  addPlayer(player: any) {
+    return this.http.post(this.baseUrl, player);
+  }
 }
+
+
+
+
